@@ -32,7 +32,7 @@ methods: {
   }
 }
 created () {
-  this.$throttle('mousemove', 'mouse-moved-throttled', this.$el)
+  this.$throttle('mousemove', 'mouse-moved-throttled')
   this.$on('mouse-moved-throttled', this.customEventHandler)
 }
 ```
@@ -40,4 +40,4 @@ created () {
 ### Arguments
 - type (String): the event [type](https://developer.mozilla.org/en-US/docs/Web/Events)
 - customEventName (String): the custom event name that will be fired on next requestAnimationFrame
-- targetObject (Object) [optional]: the physical [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) where the [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)  will be fired, defaults on [window](https://developer.mozilla.org/en-US/docs/Web/API/Window)
+- targetObject (Object) [optional]: the physical [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) where the [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)  will be fired, defaults on [vm.$el](https://vuejs.org/v2/api/#vm-el)
