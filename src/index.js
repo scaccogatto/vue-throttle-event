@@ -3,7 +3,8 @@ const VueThrottleEvent = {
     // define the main instance function
     Vue.prototype.$throttle = VueThrottleEvent._throttle
   },
-  _throttle (type, name, obj = window) {
+  _throttle (type, name, obj) {
+    obj = obj || this.$el
     let running = false
     let func = () => {
       if (running) return
