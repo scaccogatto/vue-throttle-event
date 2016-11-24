@@ -1,0 +1,27 @@
+{
+  "name": "vue-throttle-events",
+  "version": "0.1.0",
+  "description": "throttle events based on requestAnimationFrame",
+  "author": {
+    "name": "Marco Boffo",
+    "email": "<marcoboffo.waves@gmail.com>"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scaccogatto/vue-throttle-events.git"
+  },
+  "main": "dist/vue-throttle-event.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "vue": "^2.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-preset-latest": "^6.16.0",
+    "webpack": "^2.1.0-beta.27"
+  }
+}
