@@ -2,6 +2,9 @@
 
 > throttle events based on requestAnimationFrame
 
+## Status
+[![Build Status](https://travis-ci.org/scaccogatto/vue-throttle-event.svg?branch=master)](https://travis-ci.org/scaccogatto/vue-throttle-event)
+
 ## Features
 
 - Uses [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
