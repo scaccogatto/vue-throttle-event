@@ -6,16 +6,20 @@ const VueThrottleEvent = {
   _throttle (type, name, obj) {
     obj = obj || this.$el
     let running = false
+
+    // define the async function
     let func = () => {
       if (running) return
 
+      // now is running
       running = true
-      requestAnimationFrame(() => {
-        obj.dispatchEvent(new CustomEvent(name))
+      window.requestAnimationFrame(() => {
+        obj.dispatchEvent(new window.CustomEvent(name))
         running = false
       })
     }
 
+    // define the classic event
     obj.addEventListener(type, func)
   }
 }
