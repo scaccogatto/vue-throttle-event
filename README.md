@@ -44,3 +44,13 @@ created () {
 - type (String): the event [type](https://developer.mozilla.org/en-US/docs/Web/Events)
 - customEventName (String): the custom event name that will be fired on next requestAnimationFrame
 - targetObject (Object) [optional]: the physical [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) where the [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)  will be fired, defaults on [vm.$el](https://vuejs.org/v2/api/#vm-el)
+
+## Testing
+This software uses [mocha](https://mochajs.org/) as testing framework
+
+- Clone this repository
+- `cd vue-throttle-event`
+- `npm install`
+- `npm test`
+
+*Feel free to contribute and ask questions*
