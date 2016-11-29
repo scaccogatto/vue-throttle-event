@@ -14,14 +14,14 @@ describe('VueThrottleEvent', () => {
   })
 
   describe('install', () => {
-    it ('should set the $throttle method correctly', () => {
+    it('should set the $throttle method correctly', () => {
       VueThrottleEvent.install(Vue)
       assert.equal(typeof Vue.prototype.$throttle, 'function')
     })
   })
 
   describe('_throttle', () => {
-    it ('should call a \'test-throttled-event\' on next animation frame', function(done) {
+    it('should call a \'test-throttled-event\' on next animation frame', function(done) {
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
