@@ -1,5 +1,5 @@
-const assert      = require('assert')
-const jsdom       = require('mocha-jsdom')
+const assert = require('assert')
+const jsdom = require('mocha-jsdom')
 
 const VueThrottleEvent = require('../dist/vue-throttle-event.js').default
 
