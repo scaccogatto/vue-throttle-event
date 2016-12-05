@@ -21,6 +21,9 @@ const VueThrottleEvent = {
 
     // define the classic event
     obj.addEventListener(type, func)
+
+    // return it
+    return func
   }
 }
 
