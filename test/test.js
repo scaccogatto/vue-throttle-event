@@ -67,5 +67,11 @@ describe('VueThrottleEvent', () => {
       // it should be fired in 500ms or less
       this.timeout(500)
     })
+
+    it('should return a function', () => {
+      // set the throttled event
+      let func = VueThrottleEvent._throttle('test-event', 'test-throttled-event', window)
+      assert.ok(typeof func === 'function')
+    })
   })
 })

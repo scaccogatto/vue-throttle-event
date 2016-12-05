@@ -45,6 +45,9 @@ created () {
 - customEventName (String): the custom event name that will be fired on next requestAnimationFrame
 - targetObject (Object) [optional]: the physical [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) where the [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)  will be fired, defaults on [vm.$el](https://vuejs.org/v2/api/#vm-el)
 
+### Returns
+- `function` representing the real function added to the `targetObject`, so you can unbind it when you want
+
 ## Testing
 This software uses [mocha](https://mochajs.org/) as testing framework
 
