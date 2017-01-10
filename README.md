@@ -30,7 +30,8 @@ Vue.use(VueThrottleEvent)
 ### Example
 ```js
 methods: {
-  customEventHandler () {
+  customEventHandler (e) {
+    // e is the original event object
     // logic here..
   }
 }
