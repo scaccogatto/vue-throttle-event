@@ -14,7 +14,7 @@ const VueThrottleEvent = {
       // now is running
       running = true
       window.requestAnimationFrame(() => {
-        obj.dispatchEvent(new window.CustomEvent(name, { detal: { origin: e } }))
+        obj.dispatchEvent(new window.CustomEvent(name, { detail: { origin: e } }))
         running = false
       })
     }
