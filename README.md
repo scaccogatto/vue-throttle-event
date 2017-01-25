@@ -31,7 +31,7 @@ Vue.use(VueThrottleEvent)
 ```js
 methods: {
   customEventHandler (e) {
-    // e is the original event object
+    // e.detail.origin is the original event object
     // logic here..
   }
 }
