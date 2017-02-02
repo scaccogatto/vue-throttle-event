@@ -1,3 +1,5 @@
+import 'custom-event-polyfill'
+
 const VueThrottleEvent = {
   install (Vue) {
     // define the main instance function
