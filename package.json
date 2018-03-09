@@ -1,6 +1,6 @@
 {
   "name": "vue-throttle-event",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "throttle events based on requestAnimationFrame",
   "author": {
     "name": "Marco Boffo",
