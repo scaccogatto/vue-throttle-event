@@ -1,3 +1,23 @@
 language: node_js
+
 node_js:
-  - "node"
+  - lts/carbon
+
+install:
+  - npm install
+
+script:
+  - npm run start
+
+cache:
+  directories:
+
+deploy:
+  provider: npm
+  email: marcoboffo.waves@gmail.com
+  skip_cleanup: true
+  api_key:
+    secure: MCtAkHo0sDjKoTgt/NA4OHBq5o931IQ74jj836A3Q1MHYhaEVzRnRcI3+/GskZLFoXEHiMEIUX9lSPfq91kzsubwNws2q0DHtmbmLvIavmZCzMAe/LZRgr25uptXA/XN6J74xONNz3AEj0LNtwRKjdxaD6YG2M9sd8rNEoYL4vQFSDmG1F5mPAXBA3U/SAieu2z7ToTXtQo+ldO0yXQbH+1L1ovG0ptbtpOUcQzqKSTE/KS6N2p24IHddMC7QuUqaoJg7ew/plHLxFHm7FR1wdkO0p2rKCnDECgBMExyiKPvtFA+TZVc4r+YLegReJZDEG4SkSXmzD+lJhg3dA6MmAR1Pg/f18MxHixeNC8oRjka6BoLJz2pw+ZzGPAQUYczDByHhUex5VqLNCyYe6uUNPdFqaeT7IbTp1DBOaPuiYIDFljGufGljuzcncrlcvY45PNouAOHu9TYKEwBJinVfwyuu0X0nThwF+Bx4AwZfPQ3A+HL92yuzMtA3BE1OkiAhSc8APAuKQ/qSk5XvscRINGdxB72Uut0fNfU9ia3ZvO0890SWyVhjV0q3wx4S1Jmy0y/LMVRTSPx+FC5KBuBAIuAKIGWe9Jzo/qOA1OcR3SI0svfNzjdmiuMM8ttqfrGkil48fLTesIaapXif7DO2FmBCJVBp4udJvpzT3J3eTY=
+  on:
+    tags: true
+    repo: scaccogatto/vue-throttle-event
