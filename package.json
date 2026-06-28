@@ -1,6 +1,6 @@
 {
   "name": "vue-throttle-event",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "rAF-throttled DOM event handling for Vue 3 composable",
   "type": "module",
   "author": {
@@ -15,12 +15,15 @@
   "keywords": [
     "vue",
     "vue3",
+    "composition-api",
+    "typescript",
+    "vite",
     "throttle",
+    "debounce",
     "raf",
     "requestAnimationFrame",
     "event",
-    "composable",
-    "typescript"
+    "composable"
   ],
   "files": [
     "dist"
