@@ -1,7 +1,7 @@
 {
   "name": "vue-throttle-event",
   "version": "2.0.0",
-  "description": "rAF-throttled DOM event handling for Vue 3 — composable + optional plugin",
+  "description": "rAF-throttled DOM event handling for Vue 3 composable",
   "type": "module",
   "author": {
     "name": "Marco Boffo",

@@ -15,7 +15,6 @@ at most one handler call per animation frame using `requestAnimationFrame`.
 - Auto-cleanup via `onScopeDispose` — no manual teardown in components
 - Full TypeScript support with generic event types
 - ESM + CJS dual output, tree-shakeable
-- Optional Vue plugin for Options API components
 
 ## Install
 
@@ -59,32 +58,6 @@ const stop = useThrottledEvent(window, 'resize', onResize)
 
 // Call later to remove the listener and cancel any pending rAF
 stop()
-```
-
-### Vue plugin (Options API)
-
-```ts
-// main.ts
-import { createApp } from 'vue'
-import { VueThrottleEventPlugin } from 'vue-throttle-event'
-import App from './App.vue'
-
-createApp(App).use(VueThrottleEventPlugin).mount('#app')
-```
-
-```ts
-// MyComponent.vue (Options API)
-export default {
-  mounted() {
-    this._stopScroll = this.$throttle(window, 'scroll', this.onScroll)
-  },
-  beforeUnmount() {
-    this._stopScroll?.()
-  },
-  methods: {
-    onScroll(event: Event) { /* … */ },
-  },
-}
 ```
 
 ## API

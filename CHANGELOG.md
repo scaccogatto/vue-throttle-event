@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] – 2026-06-28
+
+### Breaking changes
+
+- **Removed `VueThrottleEventPlugin` export.** The `$throttle` globalProperties
+  plugin was ceremony over the composable. Options API users: import
+  `useThrottledEvent` directly from `vue-throttle-event`.
+
+### Changed
+
+- CI: single Node 20 LTS (was [20, 22] matrix).
+
+---
+
 ## [2.0.0] – 2026-06-28
 
 ### Breaking changes
