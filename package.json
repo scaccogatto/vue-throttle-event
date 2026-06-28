@@ -1,32 +1,57 @@
 {
   "name": "vue-throttle-event",
-  "version": "1.5.0",
-  "description": "throttle events based on requestAnimationFrame",
+  "version": "2.0.0",
+  "description": "rAF-throttled DOM event handling for Vue 3 — composable + optional plugin",
+  "type": "module",
   "author": {
     "name": "Marco Boffo",
     "email": "marcoboffo.waves@gmail.com"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/scaccogatto/vue-throttle-event.git"
   },
-  "main": "dist/vue-throttle-event.js",
-  "license": "MIT",
-  "scripts": {
-    "start": "webpack --config webpack.config.js",
-    "test": "mocha"
+  "keywords": [
+    "vue",
+    "vue3",
+    "throttle",
+    "raf",
+    "requestAnimationFrame",
+    "event",
+    "composable",
+    "typescript"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-throttle-event.cjs",
+  "module": "./dist/vue-throttle-event.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue-throttle-event.js",
+      "require": "./dist/vue-throttle-event.cjs"
+    }
   },
-  "dependencies": {
-    "vue": "^2.0.1"
+  "sideEffects": false,
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.8",
-    "babel-preset-latest": "^6.16.0",
-    "custom-event-polyfill": "^0.3.0",
-    "jsdom": "^9.8.3",
-    "mocha": "^3.2.0",
-    "mocha-jsdom": "^1.1.0",
-    "webpack": "^2.1.0-beta.27"
+    "@types/node": "^26.0.1",
+    "jsdom": "^29.1.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.0",
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^4.1.9",
+    "vue": "^3.5.39"
   }
 }
