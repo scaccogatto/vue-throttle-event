@@ -1,6 +1,6 @@
 {
   "name": "vue-throttle-event",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "rAF-throttled DOM event handling for Vue 3 composable",
   "type": "module",
   "author": {
@@ -12,6 +12,10 @@
     "type": "git",
     "url": "https://github.com/scaccogatto/vue-throttle-event.git"
   },
+  "bugs": {
+    "url": "https://github.com/scaccogatto/vue-throttle-event/issues"
+  },
+  "homepage": "https://www.npmjs.com/package/vue-throttle-event",
   "keywords": [
     "vue",
     "vue3",
