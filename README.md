@@ -70,7 +70,7 @@ stop()
 | `target` | `EventTarget \| null \| undefined` | The DOM target to listen on. `null`/`undefined` returns a no-op. |
 | `type` | `string` | Event type (e.g. `'scroll'`). |
 | `handler` | `(event: E) => void` | Called once per rAF frame with the **most-recent** event. |
-| `options` | `AddEventListenerOptions` | Optional, forwarded to `addEventListener`. |
+| `options` | `ThrottledEventOptions` | Optional. `AddEventListenerOptions` plus `leading` (see below), forwarded to `addEventListener`. |
 
 **Returns** `() => void` — a `stop` function that removes the listener and
 cancels any pending rAF. Called automatically on scope dispose when used
@@ -82,7 +82,23 @@ Your handler runs rAF-throttled — up to one frame after the original event —
 so it fires outside that event's synchronous dispatch. Calling
 `event.preventDefault()` inside it will **not** reliably cancel the event
 (e.g. a throttled `touchmove`/`wheel` handler cannot block scrolling). For
-cancelation, attach a separate, non-throttled listener.
+cancelation, attach a separate, non-throttled listener — or use `leading`
+below, which gives you a synchronous first call for free.
+
+### `leading` option
+
+```ts
+useThrottledEvent(el.value, 'touchmove', (event) => {
+  event.preventDefault() // works: this call runs synchronously
+}, { leading: true })
+```
+
+With `leading: true`, the **first** event of an idle period invokes the
+handler synchronously, inside that event's own dispatch — so
+`preventDefault()` inside it behaves normally. Further events that arrive
+before the next animation frame still coalesce into a single trailing call,
+same as the default behaviour. Once the trailing frame fires, the next event
+is treated as leading again. Defaults to `false` (unchanged behaviour).
 
 ---
 

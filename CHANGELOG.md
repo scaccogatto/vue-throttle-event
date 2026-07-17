@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- `leading` option for `useThrottledEvent`: when `true`, the first event of an
+  idle period invokes the handler synchronously (inside the original
+  dispatch), so `event.preventDefault()` works. Subsequent events before the
+  next frame still coalesce into one trailing call. Defaults to `false`
+  (no behaviour change).
+
 ## [3.0.0] – 2026-06-28
 
 ### Breaking changes

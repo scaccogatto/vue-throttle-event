@@ -1,5 +1,16 @@
 import { getCurrentScope, onScopeDispose } from 'vue'
 
+/** {@link useThrottledEvent} options: standard listener options plus `leading`. */
+export interface ThrottledEventOptions extends AddEventListenerOptions {
+  /**
+   * Invoke the handler synchronously (inside the original event dispatch)
+   * for the first event of an idle period, so `event.preventDefault()`
+   * works reliably. Subsequent events before the next animation frame still
+   * coalesce into one trailing call. Defaults to `false`.
+   */
+  leading?: boolean
+}
+
 /**
  * Attach an rAF-throttled event listener to a DOM target.
  *
@@ -13,7 +24,8 @@ import { getCurrentScope, onScopeDispose } from 'vue'
  *                  the target may not exist yet).
  * @param type    - The event type string (e.g. 'scroll', 'mousemove').
  * @param handler - Called once per animation frame with the latest event.
- * @param options - Optional AddEventListenerOptions forwarded verbatim.
+ * @param options - Optional {@link ThrottledEventOptions}, forwarded to
+ *                  `addEventListener` (minus `leading`).
  * @returns A `stop` function that removes the listener and cancels any
  *          pending rAF callback.
  */
@@ -21,32 +33,41 @@ export function useThrottledEvent<E extends Event = Event>(
   target: EventTarget | null | undefined,
   type: string,
   handler: (event: E) => void,
-  options?: AddEventListenerOptions,
+  options?: ThrottledEventOptions,
 ): () => void {
   if (!target) {
     return () => {}
   }
 
+  const { leading = false, ...listenerOptions } = options ?? {}
+
   let rafId: number | null = null
   let latestEvent: E | null = null
 
   const throttledHandler = (event: Event): void => {
-    latestEvent = event as E
+    // Idle (no rAF pending) + leading: dispatch synchronously now instead of
+    // queuing, so preventDefault() called inside handler is still effective.
+    if (leading && rafId === null) {
+      handler(event as E)
+    } else {
+      latestEvent = event as E
+    }
     if (rafId !== null) return
 
     rafId = requestAnimationFrame(() => {
       rafId = null
       const e = latestEvent
       latestEvent = null
-      // e is always set here: throttledHandler assigns before scheduling rAF
+      // e is null when leading already handled the sole event of this
+      // window and no further event coalesced before the frame fired.
       if (e !== null) handler(e)
     })
   }
 
-  target.addEventListener(type, throttledHandler, options)
+  target.addEventListener(type, throttledHandler, listenerOptions)
 
   const stop = (): void => {
-    target.removeEventListener(type, throttledHandler, options)
+    target.removeEventListener(type, throttledHandler, listenerOptions)
     if (rafId !== null) {
       cancelAnimationFrame(rafId)
       rafId = null
