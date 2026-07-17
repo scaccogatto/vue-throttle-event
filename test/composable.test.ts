@@ -168,6 +168,96 @@ describe('useThrottledEvent', () => {
     stop!()
   })
 
+  // ─── leading option ────────────────────────────────────────────────────
+
+  it('leading: false (default) does not call the handler synchronously', () => {
+    const handler = vi.fn()
+    const target = new EventTarget()
+    useThrottledEvent(target, 'scroll', handler)
+
+    target.dispatchEvent(new Event('scroll'))
+    expect(handler).not.toHaveBeenCalled()
+  })
+
+  it('leading: true calls the handler synchronously on the first event of an idle period', () => {
+    const handler = vi.fn()
+    const target = new EventTarget()
+    useThrottledEvent(target, 'scroll', handler, { leading: true })
+
+    const e1 = new Event('scroll')
+    target.dispatchEvent(e1)
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(e1)
+  })
+
+  it('leading: true coalesces further events in the same frame into one trailing call', () => {
+    const handler = vi.fn()
+    const target = new EventTarget()
+    useThrottledEvent(target, 'scroll', handler, { leading: true })
+
+    const e1 = new Event('scroll')
+    const e2 = new Event('scroll')
+    const e3 = new Event('scroll')
+    target.dispatchEvent(e1)
+    target.dispatchEvent(e2)
+    target.dispatchEvent(e3)
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(e1)
+
+    vi.advanceTimersToNextFrame()
+    expect(handler).toHaveBeenCalledTimes(2)
+    expect(handler).toHaveBeenLastCalledWith(e3)
+  })
+
+  it('leading: true does not fire a trailing call when only the leading event occurred', () => {
+    const handler = vi.fn()
+    const target = new EventTarget()
+    useThrottledEvent(target, 'scroll', handler, { leading: true })
+
+    target.dispatchEvent(new Event('scroll'))
+    expect(handler).toHaveBeenCalledTimes(1)
+
+    vi.advanceTimersToNextFrame()
+    expect(handler).toHaveBeenCalledTimes(1)
+  })
+
+  it('leading: true fires synchronously again after the idle period resumes', () => {
+    const handler = vi.fn()
+    const target = new EventTarget()
+    useThrottledEvent(target, 'scroll', handler, { leading: true })
+
+    const e1 = new Event('scroll')
+    target.dispatchEvent(e1)
+    vi.advanceTimersToNextFrame()
+    expect(handler).toHaveBeenCalledTimes(1)
+
+    const e2 = new Event('scroll')
+    target.dispatchEvent(e2)
+    expect(handler).toHaveBeenCalledTimes(2)
+    expect(handler).toHaveBeenLastCalledWith(e2)
+  })
+
+  it('leading: true lets the handler cancel a cancelable event via preventDefault', () => {
+    const target = new EventTarget()
+    useThrottledEvent(target, 'custom', (e) => e.preventDefault(), { leading: true })
+
+    const e = new Event('custom', { cancelable: true })
+    target.dispatchEvent(e)
+
+    expect(e.defaultPrevented).toBe(true)
+  })
+
+  it('leading: true still forwards other AddEventListenerOptions to addEventListener', () => {
+    const handler = vi.fn()
+    const target = new EventTarget()
+    const addSpy = vi.spyOn(target, 'addEventListener')
+    useThrottledEvent(target, 'scroll', handler, { leading: true, capture: true })
+
+    expect(addSpy).toHaveBeenCalledWith('scroll', expect.any(Function), { capture: true })
+  })
+
   // ─── Generic type parameter ───────────────────────────────────────────
 
   it('preserves the generic event type for the handler', () => {
