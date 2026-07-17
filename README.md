@@ -3,6 +3,7 @@
 > rAF-throttled DOM event handling for Vue 3
 
 [![npm version](https://img.shields.io/npm/v/vue-throttle-event)](https://www.npmjs.com/package/vue-throttle-event)
+[![npm downloads](https://img.shields.io/npm/dm/vue-throttle-event)](https://www.npmjs.com/package/vue-throttle-event)
 [![CI](https://github.com/scaccogatto/vue-throttle-event/actions/workflows/ci.yml/badge.svg)](https://github.com/scaccogatto/vue-throttle-event/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -74,6 +75,14 @@ stop()
 **Returns** `() => void` — a `stop` function that removes the listener and
 cancels any pending rAF. Called automatically on scope dispose when used
 inside a Vue component or effect scope.
+
+### Caveat: `preventDefault()`
+
+Your handler runs rAF-throttled — up to one frame after the original event —
+so it fires outside that event's synchronous dispatch. Calling
+`event.preventDefault()` inside it will **not** reliably cancel the event
+(e.g. a throttled `touchmove`/`wheel` handler cannot block scrolling). For
+cancelation, attach a separate, non-throttled listener.
 
 ---
 

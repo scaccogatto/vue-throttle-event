@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 
 - CI: single Node 20 LTS (was [20, 22] matrix).
 
+### Note
+
+- npm `2.0.1` had already shipped the composable-only build; `3.0.0` formalizes the break with a correct major version.
+
 ---
 
 ## [2.0.0] – 2026-06-28
