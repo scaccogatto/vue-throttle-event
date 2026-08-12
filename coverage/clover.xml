@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1786092845821" clover="3.2.0">
-  <project timestamp="1786092845821" name="All files">
+<coverage generated="1786538396338" clover="3.2.0">
+  <project timestamp="1786538396338" name="All files">
     <metrics statements="25" coveredstatements="25" conditionals="17" coveredconditionals="17" methods="5" coveredmethods="5" elements="47" coveredelements="47" complexity="0" loc="25" ncloc="25" packages="1" files="1" classes="1"/>
     <file name="composable.ts" path="/Users/gatto/Developer/scaccogatto/vue-throttle-event/src/composable.ts">
       <metrics statements="25" coveredstatements="25" conditionals="17" coveredconditionals="17" methods="5" coveredmethods="5"/>
