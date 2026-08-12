@@ -19,6 +19,10 @@ export default defineConfig({
     dts({
       tsconfigPath: './tsconfig.build.json',
       insertTypesEntry: true,
+      // Library sources are pure TS. Without this, unplugin-dts finds
+      // demo/App.vue while scanning the root and switches to the Vue
+      // processor, which needs @vue/language-core.
+      processor: 'ts',
     }),
   ],
   test: {

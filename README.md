@@ -7,6 +7,8 @@
 [![CI](https://github.com/scaccogatto/vue-throttle-event/actions/workflows/ci.yml/badge.svg)](https://github.com/scaccogatto/vue-throttle-event/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+[Live demo](https://scaccogatto.github.io/vue-throttle-event/) — move the mouse and compare a plain listener against the throttled one.
+
 Collapses high-frequency DOM events (`scroll`, `mousemove`, `resize`, …) into
 at most one handler call per animation frame using `requestAnimationFrame`.
 
