@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+
+- `useThrottledEvent` infers the event type from the event name on `Window`,
+  `Document` and `HTMLElement` targets (`'mousemove'` gives `MouseEvent`).
+  An explicit type argument and the `Event` fallback for custom event names
+  keep working.
+- `vue-throttle-event/package.json` is exported.
+
+### Changed
+
+- `peerDependencies.vue` is now `^3.2.0` (was `^3.0.0`). Vue 3.0 and 3.1 never
+  worked: they lack `getCurrentScope`/`onScopeDispose`, so the first call
+  threw. CI now also runs the tests against Vue 3.2.0.
+- `engines.node` is set to `>=24`, the version CI tests.
+- `homepage` points at the live demo instead of the npm page.
+
+### Fixed
+
+- Type declarations resolve under `moduleResolution: node16`/`nodenext`. The
+  types are now a single bundled file with no relative imports, shipped as
+  `index.d.ts` for `import` and `index.d.cts` for `require`, with `types`
+  first in each `exports` condition. CJS consumers no longer get ESM-typed
+  declarations.
+
 ## [3.1.0] – 2026-07-17
 
 ### Added
