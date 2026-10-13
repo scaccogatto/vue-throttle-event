@@ -2,23 +2,65 @@ name: Release
 on:
   push:
     tags: ['v*']
-  workflow_dispatch:
+
+permissions: {}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Deployment policy (tags v* only) is managed by the github-infra IaC root.
+    # The npm trusted publisher has no environment set, so it accepts this one.
+    environment: npm
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Exact Node pin: its bundled npm (11.19.0) satisfies trusted publishing
+      # (npm >= 11.5.1, Node >= 22.14.0), so no npm self-upgrade is needed.
+      # No dependency cache in the release job.
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
-          cache: npm
+          node-version: 24.21.0
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Check toolchain and tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          node -e '
+            const [maj, min, pat] = process.argv[1].split(".").map(Number)
+            if (maj < 11 || (maj === 11 && (min < 5 || (min === 5 && pat < 1)))) {
+              console.error(`npm ${process.argv[1]} is older than 11.5.1, required by trusted publishing`)
+              process.exit(1)
+            }
+          ' "$(npm --version)"
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "v$VERSION" ]; then
+            echo "::error::Tag $TAG does not match package.json version v$VERSION"
+            exit 1
+          fi
+
       - run: npm ci
-      - run: npm run build
-      - run: npm install -g npm@latest
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run coverage
+
+      - name: Build
+        run: npm run build
+
+      - name: Check package
+        run: npm run lint:package
+
       - name: Check if version is already published
         id: check
         run: |
@@ -29,6 +71,7 @@ jobs:
           else
             echo "published=false" >> "$GITHUB_OUTPUT"
           fi
+
       - name: Publish
         if: steps.check.outputs.published == 'false'
         run: npm publish
