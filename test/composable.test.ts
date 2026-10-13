@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, expectTypeOf, vi, beforeEach, afterEach } from 'vitest'
 import { effectScope } from 'vue'
 import { useThrottledEvent } from '../src/composable'
 
@@ -270,5 +270,49 @@ describe('useThrottledEvent', () => {
     vi.advanceTimersToNextFrame()
 
     expect(handler).toHaveBeenCalledWith(clickEvent)
+  })
+
+  // ─── Event type inference (checked by `npm run typecheck`) ────────────
+
+  it('infers the event type from the event name on window', () => {
+    const stop = useThrottledEvent(window, 'mousemove', (event) => {
+      expectTypeOf(event).toEqualTypeOf<MouseEvent>()
+    })
+    stop()
+  })
+
+  it('infers the event type from the event name on document', () => {
+    const stop = useThrottledEvent(document, 'visibilitychange', (event) => {
+      expectTypeOf(event).toEqualTypeOf<Event>()
+    })
+    const stopKey = useThrottledEvent(document, 'keydown', (event) => {
+      expectTypeOf(event).toEqualTypeOf<KeyboardEvent>()
+    })
+    stop()
+    stopKey()
+  })
+
+  it('infers the event type from the event name on an element', () => {
+    const el = document.createElement('div') as HTMLElement | null
+    const stop = useThrottledEvent(el, 'wheel', (event) => {
+      expectTypeOf(event).toEqualTypeOf<WheelEvent>()
+    })
+    stop()
+  })
+
+  it('keeps the explicit generic and the Event fallback for custom events', () => {
+    const target = new EventTarget()
+    const stopExplicit = useThrottledEvent<MouseEvent>(window, 'mousemove', (event) => {
+      expectTypeOf(event).toEqualTypeOf<MouseEvent>()
+    })
+    const stopCustom = useThrottledEvent(target, 'custom', (event) => {
+      expectTypeOf(event).toEqualTypeOf<Event>()
+    })
+    const stopUnknownOnWindow = useThrottledEvent(window, 'my-event', (event) => {
+      expectTypeOf(event).toEqualTypeOf<Event>()
+    })
+    stopExplicit()
+    stopCustom()
+    stopUnknownOnWindow()
   })
 })

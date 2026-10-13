@@ -22,13 +22,40 @@ export interface ThrottledEventOptions extends AddEventListenerOptions {
  * @param target  - The DOM EventTarget (Window, Element, …). Pass null/
  *                  undefined to get a no-op stop function (useful when
  *                  the target may not exist yet).
- * @param type    - The event type string (e.g. 'scroll', 'mousemove').
+ * @param type    - The event type string (e.g. 'scroll', 'mousemove'). For
+ *                  a Window, Document or HTMLElement target and a known
+ *                  event name, the handler's event type is inferred
+ *                  (e.g. 'mousemove' gives MouseEvent).
  * @param handler - Called once per animation frame with the latest event.
  * @param options - Optional {@link ThrottledEventOptions}, forwarded to
  *                  `addEventListener` (minus `leading`).
  * @returns A `stop` function that removes the listener and cancels any
  *          pending rAF callback.
  */
+export function useThrottledEvent<K extends keyof WindowEventMap>(
+  target: Window | null | undefined,
+  type: K,
+  handler: (event: WindowEventMap[K]) => void,
+  options?: ThrottledEventOptions,
+): () => void
+export function useThrottledEvent<K extends keyof DocumentEventMap>(
+  target: Document | null | undefined,
+  type: K,
+  handler: (event: DocumentEventMap[K]) => void,
+  options?: ThrottledEventOptions,
+): () => void
+export function useThrottledEvent<K extends keyof HTMLElementEventMap>(
+  target: HTMLElement | null | undefined,
+  type: K,
+  handler: (event: HTMLElementEventMap[K]) => void,
+  options?: ThrottledEventOptions,
+): () => void
+export function useThrottledEvent<E extends Event = Event>(
+  target: EventTarget | null | undefined,
+  type: string,
+  handler: (event: E) => void,
+  options?: ThrottledEventOptions,
+): () => void
 export function useThrottledEvent<E extends Event = Event>(
   target: EventTarget | null | undefined,
   type: string,

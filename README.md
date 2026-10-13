@@ -16,14 +16,16 @@ at most one handler call per animation frame using `requestAnimationFrame`.
 
 - Zero-dependency composable (Vue peer dep only)
 - Auto-cleanup via `onScopeDispose` — no manual teardown in components
-- Full TypeScript support with generic event types
-- ESM + CJS dual output, tree-shakeable
+- Full TypeScript support: the event type is inferred from the event name
+- ESM + CJS dual output with matching type declarations, tree-shakeable
 
 ## Install
 
 ```bash
 npm install vue-throttle-event
 ```
+
+Requires Vue 3.2 or later (it uses the effect scope API).
 
 ## Usage
 
@@ -45,12 +47,24 @@ onMounted(() => {
 </script>
 ```
 
-### Custom event type
+### Event types
+
+On a `Window`, `Document` or `HTMLElement` target the event type is inferred
+from the event name:
 
 ```ts
-useThrottledEvent<MouseEvent>(el.value, 'mousemove', (event) => {
+useThrottledEvent(el.value, 'mousemove', (event) => {
   // event is typed as MouseEvent
   console.log(event.clientX, event.clientY)
+})
+```
+
+For custom events or other targets, pass the type explicitly (it defaults to
+`Event`):
+
+```ts
+useThrottledEvent<CustomEvent<number>>(bus, 'progress', (event) => {
+  console.log(event.detail)
 })
 ```
 
@@ -71,7 +85,7 @@ stop()
 |---|---|---|
 | `target` | `EventTarget \| null \| undefined` | The DOM target to listen on. `null`/`undefined` returns a no-op. |
 | `type` | `string` | Event type (e.g. `'scroll'`). |
-| `handler` | `(event: E) => void` | Called once per rAF frame with the **most-recent** event. |
+| `handler` | `(event: E) => void` | Called once per rAF frame with the **most-recent** event. `E` is inferred from `type` on `Window`, `Document` and `HTMLElement` targets, else `Event` or your explicit type argument. |
 | `options` | `ThrottledEventOptions` | Optional. `AddEventListenerOptions` plus `leading` (see below), forwarded to `addEventListener`. |
 
 **Returns** `() => void` — a `stop` function that removes the listener and
@@ -104,9 +118,16 @@ is treated as leading again. Defaults to `false` (unchanged behaviour).
 
 ---
 
+## Migrating to v3
+
+v3 removed the `VueThrottleEventPlugin` (`this.$throttle`) export. Options API
+users import `useThrottledEvent` directly, as shown below. Everything else is
+the same as v2.
+
 ## Migrating from v1 (Vue 2)
 
-v2 is a full rewrite for Vue 3. The public API changed completely.
+v2 was a full rewrite for Vue 3, and the public API changed completely. The
+"After" code below works unchanged on v3.
 
 ### Before (v1, Vue 2 Options API)
 
@@ -122,7 +143,7 @@ created() {
 }
 ```
 
-### After (v2, Vue 3 Composition API)
+### After (v2 and later, Vue 3 Composition API)
 
 ```ts
 import { useThrottledEvent } from 'vue-throttle-event'
@@ -134,7 +155,7 @@ onMounted(() => {
 
 Key differences:
 
-| v1 (Vue 2) | v2 (Vue 3) |
+| v1 (Vue 2) | v2 and later (Vue 3) |
 |---|---|
 | `Vue.use(plugin)` global install required | Import composable directly |
 | Re-dispatches a `CustomEvent`; listen with `this.$on` | Calls your handler with the latest `Event` object |
