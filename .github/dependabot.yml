@@ -4,6 +4,12 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Stay on TypeScript 6 until TS 7.1 and typescript-eslint, vue-tsc and
+      # api-extractor support it.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
     groups:
       vitest:
         patterns:

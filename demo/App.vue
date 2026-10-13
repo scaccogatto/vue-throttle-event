@@ -12,7 +12,7 @@ window.addEventListener('mousemove', () => {
 })
 
 // Same event, coalesced into one call per animation frame.
-useThrottledEvent<MouseEvent>(window, 'mousemove', (event) => {
+useThrottledEvent(window, 'mousemove', (event) => {
   throttled.value += 1
   position.value = { x: event.clientX, y: event.clientY }
 })
@@ -57,7 +57,12 @@ const reset = () => {
       last coalesced event: <code>{{ position.x }}, {{ position.y }}</code>
     </p>
 
-    <button type="button" @click="reset">Reset counters</button>
+    <button
+      type="button"
+      @click="reset"
+    >
+      Reset counters
+    </button>
 
     <h2>The listener cleans up after itself</h2>
     <p>

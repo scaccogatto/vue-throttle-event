@@ -10,12 +10,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/scaccogatto/vue-throttle-event.git"
+    "url": "git+https://github.com/scaccogatto/vue-throttle-event.git"
   },
   "bugs": {
     "url": "https://github.com/scaccogatto/vue-throttle-event/issues"
   },
-  "homepage": "https://www.npmjs.com/package/vue-throttle-event",
+  "homepage": "https://scaccogatto.github.io/vue-throttle-event/",
   "keywords": [
     "vue",
     "vue3",
@@ -34,13 +34,19 @@
   ],
   "main": "./dist/vue-throttle-event.cjs",
   "module": "./dist/vue-throttle-event.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/vue-throttle-event.js",
-      "require": "./dist/vue-throttle-event.cjs"
-    }
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/vue-throttle-event.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/vue-throttle-event.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
@@ -50,21 +56,31 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint .",
+    "lint:package": "publint --strict && attw --pack .",
     "prepublishOnly": "npm run build",
     "build-demo": "vite build --config vite.config.demo.ts",
     "dev-demo": "vite --config vite.config.demo.ts",
-    "typecheck-demo": "vue-tsc --noEmit -p tsconfig.demo.json"
+    "typecheck-demo": "vue-tsc --noEmit -p tsconfig.demo.json",
+    "test:vue-min": "npm install --no-save vue@3.2.0 && vitest run"
   },
   "peerDependencies": {
-    "vue": "^3.0.0"
+    "vue": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@microsoft/api-extractor": "^7.59.4",
     "@types/node": "^26.6.5",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vitest/coverage-v8": "^5.0.4",
     "eslint": "^10.6.0",
+    "eslint-plugin-vue": "^10.11.1",
+    "globals": "^17.13.0",
     "jsdom": "^30.0.1",
+    "publint": "^0.3.25",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.1.0",
